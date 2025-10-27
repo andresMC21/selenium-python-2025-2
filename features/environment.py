@@ -8,6 +8,12 @@ def before_scenario(context, scenario):
     context.driver = webdriver.Chrome()  # o webdriver.Firefox()
     context.driver.maximize_window()
 
+    if "bruno mars" in scenario.name.lower():
+        context.driver.get("https://www.last.fm")
+    
+    elif "movie" in scenario.name.lower():
+        context.driver.get("https://www.imdb.com")
+
 def after_scenario(context, scenario):
     """
     Esta función se ejecuta después de cada escenario de prueba.
