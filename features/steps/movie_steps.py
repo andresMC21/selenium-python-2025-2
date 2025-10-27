@@ -1,5 +1,4 @@
 from behave import given, when, then
-# Asegúrate de que el path de importación sea correcto
 from pages.movie_main_page import MovieMainPage 
 from pages.movie_result_page import MovieResultPage 
 from pages.movie_description_page import MovieDescriptionPage 
@@ -11,8 +10,6 @@ def step_impl(context):
     Asume que la URL ya se cargó en environment.py.
     """
     context.page = MovieMainPage(context.driver)
-    # Es crucial llamar a esta función para eliminar el overlay de cookies, 
-    # si está presente, antes de interactuar con la página.
 
 
 @when('the user searches for the movie "{movie_name}"')
@@ -27,11 +24,6 @@ def step_impl(context):
     """Abre el primer resultado de la lista de búsqueda."""
     context.page.open_first_result()
 
-
-# -----------------------------------------------------------------------------
-## Aserciones (Then)
-# -----------------------------------------------------------------------------
-
 @then('the user should be redirected to the "{expected_title}" movie page')
 def step_impl(context, expected_title):
     context.page = MovieDescriptionPage(context.driver)
@@ -39,7 +31,6 @@ def step_impl(context, expected_title):
     Verifica que el usuario ha sido redirigido a la página de detalles correcta.
     Comprueba que el título de la página (o la URL) contenga el nombre de la película.
     """
-    # Usamos lower() para hacer la aserción insensible a mayúsculas/minúsculas
     page_content = context.driver.title.lower() + context.driver.current_url.lower()
     
     assert expected_title.lower() in page_content, \
@@ -50,7 +41,6 @@ def step_impl(context, expected_title):
     """Verifica que el título principal extraído de la página coincida con el valor esperado."""
     actual_title = context.page.get_movie_title()
     
-    # IMDb a veces incluye el año o caracteres especiales; usamos startsWith o chequeamos igualdad exacta
     assert actual_title.strip() == expected_title, \
            f"Title mismatch. Expected: '{expected_title}', but found: '{actual_title}'"
 
